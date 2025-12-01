@@ -27,3 +27,8 @@ nbdist/
 
 ### Mac files ###
 *.DS_Store
+
+/out/
+/target/
+/build/
+/*.class
