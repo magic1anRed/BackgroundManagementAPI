@@ -1,5 +1,7 @@
 package cn.magic.backgroundmanagement.entity;
 
+import cn.magic.backgroundmanagement.entity.proxy.RoleEntityProxy;
+import com.easy.query.core.proxy.ProxyEntityAvailable;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -20,7 +22,7 @@ import lombok.experimental.FieldNameConstants;
 @FieldNameConstants
 @Table(value = "role")
 @EntityProxy
-public class RoleEntity {
+public class RoleEntity implements ProxyEntityAvailable<RoleEntity , RoleEntityProxy> {
 
     /**
      * 角色ID

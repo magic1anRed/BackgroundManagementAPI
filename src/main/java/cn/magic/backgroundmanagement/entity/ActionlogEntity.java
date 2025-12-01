@@ -1,5 +1,7 @@
 package cn.magic.backgroundmanagement.entity;
 
+import cn.magic.backgroundmanagement.entity.proxy.ActionlogEntityProxy;
+import com.easy.query.core.proxy.ProxyEntityAvailable;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -20,7 +22,7 @@ import lombok.experimental.FieldNameConstants;
 @FieldNameConstants
 @Table(value = "actionlog")
 @EntityProxy
-public class ActionlogEntity {
+public class ActionlogEntity implements ProxyEntityAvailable<ActionlogEntity , ActionlogEntityProxy> {
 
     /**
      * 日志ID

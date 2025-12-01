@@ -15,7 +15,7 @@ solon:
   dataSources:
     db1!: # 数据源名称是 db1
       class: "com.zaxxer.hikari.HikariDataSource"
-      jdbcUrl: jdbc:mysql://localhost:3306/exam_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
+      jdbcUrl: jdbc:mysql://localhost:3306/backgroundmanagement_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
       driverClassName: com.mysql.cj.jdbc.Driver
       username: root
       password: 679523
