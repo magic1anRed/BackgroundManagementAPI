@@ -1,0 +1,38 @@
+server:
+  port: 3030
+
+solon:
+  app:
+    name: 'demo-app'
+    group: 'demo'
+
+  logging:
+    appender:
+      console:
+        level: INFO
+      file:
+        level: INFO
+  dataSources:
+    db1!: # 数据源名称是 db1
+      class: "com.zaxxer.hikari.HikariDataSource"
+      jdbcUrl: jdbc:mysql://localhost:3306/exam_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
+      driverClassName: com.mysql.cj.jdbc.Driver
+      username: root
+      password: 679523
+
+easy-query:
+  db1: # 必须和 solon.dataSources.db1! 名称一致
+    database: mysql  # 数据库方言（mysql、postgresql、sqlserver等）
+    print-sql: true  # 打印SQL日志
+
+redis:
+  rd1: # 数据源-ds1
+    server: localhost:6379  # Redis服务地址
+    db: 1 # Redis数据库编号
+
+sa-token:
+  token-name: magicToken # Token名称
+  timeout: 2592000  # Token有效期
+  is-concurrent: false # 是否允许同一账号并发登录
+  token-style: uuid # Token风格
+  is-log: true # 打印日志
