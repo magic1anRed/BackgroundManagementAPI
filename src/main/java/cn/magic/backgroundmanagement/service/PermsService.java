@@ -37,7 +37,7 @@ public class PermsService {
         List<PermsEntity> filteredPerms = perms.stream()
                 .filter(p -> userPermIds.contains(p.getId()))
                 .collect(Collectors.toList());
-        // ---- 打印调试 ----
+            // ---- 打印调试 ----
         System.out.println("filteredPerms = " + filteredPerms);
         // ---- 返回给前端 ----
         return R.ok("获取菜单成功", filteredPerms);
