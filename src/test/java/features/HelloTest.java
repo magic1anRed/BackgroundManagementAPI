@@ -5,6 +5,7 @@ import cn.magic.backgroundmanagement.App;
 
 import cn.magic.backgroundmanagement.entity.UsersEntity;
 import cn.magic.backgroundmanagement.service.LoginService;
+import cn.magic.backgroundmanagement.service.PermsService;
 import cn.magic.backgroundmanagement.utils.ClientipUtil;
 import cn.magic.backgroundmanagement.utils.Ip2RegionUtil;
 import cn.magic.backgroundmanagement.utils.MD5SaltsUtil;
@@ -32,13 +33,15 @@ public class HelloTest extends HttpTester {
 
     @Inject
     private LoginService loginService;
+    @Inject
+    private PermsService permsService;
 
     @Inject
     SaTokenDao saTokenDao;
     @Test
     public void hello() throws IOException {
 
-        String ip1 = "192.168.3.1";
+/*        String ip1 = "192.168.3.1";
         String ip2 = "localhost";
         String ip3 = "27.154.86.48";
         String ip4 = "211.99.98.197";
@@ -47,11 +50,10 @@ public class HelloTest extends HttpTester {
         String ip7 = "2606:4700:4700::1111";
 
         String region = ClientipUtil.parse(ip3);
-        System.out.println("region = " + region);
+        System.out.println("region = " + region);*/
 /*        String salts = MD5SaltsUtil.salts();
         String s = MD5SaltsUtil.md5("679523",salts);
         System.out.println("password = " + s + " | salts = " + salts);*/
-
 
 
 
