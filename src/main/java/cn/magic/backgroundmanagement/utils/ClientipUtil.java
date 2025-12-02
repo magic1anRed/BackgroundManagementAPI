@@ -13,6 +13,7 @@ import org.lionsoul.ip2region.xdb.Version;
  * 客户端IP地址工具类
  * @visduo
  */
+
 public class ClientipUtil {
 
     /**
@@ -47,7 +48,7 @@ public class ClientipUtil {
         } else if(!Validator.isIpv4(ip)) {
             // 判断IPv4地址是否合法，不合法则结束
             // 参考文档：https://plus.hutool.cn/apidocs/cn/hutool/core/lang/Validator.html
-            return "未知";
+            return "未知1";
         } else if(Ipv4Util.isInnerIP(ip)) {
             // 其他格式的内网IP由ip2region处理结果比较乱，可以调用HuTool工具类判断是否为内网IP
             // 参考文档：https://plus.hutool.cn/apidocs/cn/hutool/core/net/Ipv4Util.html
@@ -63,7 +64,7 @@ public class ClientipUtil {
             // 当前查询客户端实现不适用于dbPath指定的xdb文件的查询.
             // 应该停止启动服务，使用合适的xdb文件或者升级到适合dbPath的Searcher实现
             logger.error("ip2region数据库文件验证失败：{}", e.getMessage());
-            return "未知";
+            return "未知1";
         }
 
         // 2、从dbPath加载整个xdb到内存
@@ -72,7 +73,7 @@ public class ClientipUtil {
             cBuff = Searcher.loadContentFromFile(dbPath);
         } catch (Exception e) {
             logger.error("ip2region数据库文件加载失败：{}", e.getMessage());
-            return "未知";
+            return "未知2";
         }
 
         // 3、使用上述的cBuff创建一个完全基于内存的查询对象
@@ -81,12 +82,13 @@ public class ClientipUtil {
             searcher = Searcher.newWithBuffer(version, cBuff);
         } catch (Exception e) {
             logger.error("ip2region创建查询对象失败：{}", e.getMessage());
-            return "未知";
+            return "未知3";
         }
 
         // 4、查询
         try {
             String searchResult = searcher.search(ip);
+            System.out.println("分割前："+searchResult);
             // 查询结果格式：中国|0|福建省|厦门市|电信
             // 只需要提取省市县运营商，格式化字符串提取
             String[] split = searchResult.split("\\|");
@@ -98,9 +100,7 @@ public class ClientipUtil {
         // 5、关闭资源：该searcher对象可以安全用于并发，等整个服务关闭的时候再关闭searcher
         // searcher.close();
 
-        return "未知";
+        return "未知4";
     }
-
-
 
 }

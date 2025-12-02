@@ -55,6 +55,12 @@ public class R {
                 .setSuccess(false)
                 .setMessage(message);
     }
+    public static R error(int code,String message) {
+        return new R()
+                .setCode(code)
+                .setSuccess(false)
+                .setMessage(message);
+    }
 
     // ----------- 链式调用支持 -----------
     public R code(Integer code) {

@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
+import org.noear.snack.annotation.ONodeAttr;
 
 /**
  * 用户表 实体类。
@@ -50,11 +51,13 @@ public class UsersEntity implements ProxyEntityAvailable<UsersEntity , UsersEnti
     /**
      * 账户密码
      */
+    @ONodeAttr(ignore = true)
     private String password;
 
     /**
      * 账户盐值
      */
+    @ONodeAttr(ignore = true)
     private String salts;
 
     /**
