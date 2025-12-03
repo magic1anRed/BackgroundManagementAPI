@@ -8,6 +8,7 @@ import cn.magic.backgroundmanagement.entity.UsersEntity;
 import cn.magic.backgroundmanagement.service.DeptService;
 import cn.magic.backgroundmanagement.service.LoginService;
 import cn.magic.backgroundmanagement.service.PermsService;
+import cn.magic.backgroundmanagement.service.UserService;
 import cn.magic.backgroundmanagement.utils.ClientipUtil;
 import cn.magic.backgroundmanagement.utils.Ip2RegionUtil;
 import cn.magic.backgroundmanagement.utils.MD5SaltsUtil;
@@ -39,6 +40,8 @@ public class HelloTest extends HttpTester {
     private PermsService permsService;
     @Inject
     private DeptService deptService;
+    @Inject
+    private UserService userService;
 
     @Inject
     SaTokenDao saTokenDao;
@@ -55,11 +58,11 @@ public class HelloTest extends HttpTester {
 
         String region = ClientipUtil.parse(ip3);
         System.out.println("region = " + region);*/
-/*        String salts = MD5SaltsUtil.salts();
+        String salts = MD5SaltsUtil.salts();
         String s = MD5SaltsUtil.md5("679523",salts);
-        System.out.println("password = " + s + " | salts = " + salts);*/
+        System.out.println("password = " + s + " | salts = " + salts);
 
-        System.out.println("deptService.deptList() = " + deptService.deleteDept(8));
+//        System.out.println("deptService.deptList() = " + userService.updateUserInfo(1,null,"老蒋",null));
 
 
     }
