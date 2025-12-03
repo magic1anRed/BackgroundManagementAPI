@@ -3,7 +3,9 @@ package features;
 import cn.dev33.satoken.dao.SaTokenDao;
 import cn.magic.backgroundmanagement.App;
 
+import cn.magic.backgroundmanagement.entity.DeptEntity;
 import cn.magic.backgroundmanagement.entity.UsersEntity;
+import cn.magic.backgroundmanagement.service.DeptService;
 import cn.magic.backgroundmanagement.service.LoginService;
 import cn.magic.backgroundmanagement.service.PermsService;
 import cn.magic.backgroundmanagement.utils.ClientipUtil;
@@ -35,6 +37,8 @@ public class HelloTest extends HttpTester {
     private LoginService loginService;
     @Inject
     private PermsService permsService;
+    @Inject
+    private DeptService deptService;
 
     @Inject
     SaTokenDao saTokenDao;
@@ -55,6 +59,7 @@ public class HelloTest extends HttpTester {
         String s = MD5SaltsUtil.md5("679523",salts);
         System.out.println("password = " + s + " | salts = " + salts);*/
 
+        System.out.println("deptService.deptList() = " + deptService.deleteDept(8));
 
 
     }

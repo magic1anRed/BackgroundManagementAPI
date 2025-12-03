@@ -2,6 +2,7 @@ package cn.magic.backgroundmanagement.entity;
 
 import cn.magic.backgroundmanagement.entity.proxy.DeptEntityProxy;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
+import com.easy.query.core.proxy.ProxyEntityAvailable;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -38,7 +39,7 @@ public class DeptEntity implements ProxyEntityAvailable<DeptEntity , DeptEntityP
     /**
      * 删除状态，0未删除
      */
-    private Long deleted;
+    private Integer deleted;
 
 
 }

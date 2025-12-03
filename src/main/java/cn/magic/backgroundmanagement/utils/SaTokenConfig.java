@@ -59,7 +59,7 @@ public class SaTokenConfig {
                     // 判断异常类型
                     if(e instanceof NotLoginException) {
                         // 错误类型是未登录NotLoginException，封装返回401状态
-                        return R.error("未登录");
+                        return R.error(401,"未登录");
                     } else if(e instanceof NotRoleException || e instanceof NotPermissionException) {
                         // 错误类型是无权限NotRoleException/NotPermissionException，封装返回403状态
                         return R.error("暂无权限");

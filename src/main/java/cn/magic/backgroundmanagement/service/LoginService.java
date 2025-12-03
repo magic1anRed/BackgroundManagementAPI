@@ -37,15 +37,15 @@ public class LoginService {
                 .firstOrNull();
         // ---- 用户不存在 ----
         if (usersEntity == null) {
-            return R.error("用户不存在！登陆失败！");
+            return R.error(404,"用户不存在！登陆失败！");
         }
         // ---- 加盐后验证密码是否正确 ----
         if (!usersEntity.getPassword().equals(MD5SaltsUtil.md5(password, usersEntity.getSalts()))) {
-            return R.error("密码错误！登陆失败！");
+            return R.error(400,"密码错误！登陆失败！");
         }
         // ---- 验证用户状态是否被禁用 ----
         if (usersEntity.getStatus() == 0) {
-            return R.error("用户被禁用！登陆失败！");
+            return R.error(403,"用户被禁用！登陆失败！");
         }
         // ---- 保存登录日志 ----
         LoginlogEntity loginlogEntity = new LoginlogEntity();
