@@ -19,6 +19,12 @@ public class DeptController {
         return R.ok("查询成功", deptService.deptList(currentPage, pageSize, name));
     }
 
+    @Get
+    @Mapping("/getDeptById")
+    public R getDeptById(@Param("id") Integer id) {
+        return deptService.getDeptById(id);
+    }
+
     @Post
     @Mapping("/addDept")
     public R addDept(@Param("name") String name) {

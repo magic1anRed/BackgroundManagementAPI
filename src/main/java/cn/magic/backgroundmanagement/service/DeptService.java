@@ -24,6 +24,12 @@ public class DeptService {
         return R.ok("获取部门列表成功！",pageResult);
     }
 
+    public R getDeptById(Integer id){
+        DeptEntity deptEntity = easyEntityQuery.queryable(DeptEntity.class)
+                .where(d -> d.id().eq(id))
+                .firstNotNull();
+        return R.ok("获取部门成功！",deptEntity);
+    }
     public R addDept(String name){
         DeptEntity deptEntity = new DeptEntity();
         deptEntity.setDeleted(0);
