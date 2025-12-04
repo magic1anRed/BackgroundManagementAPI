@@ -1,6 +1,7 @@
 package cn.magic.backgroundmanagement.entity;
 
 import cn.magic.backgroundmanagement.entity.proxy.PermsEntityProxy;
+import com.easy.query.core.annotation.ColumnIgnore;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import lombok.Data;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,8 @@ import com.easy.query.core.annotation.Column;
 import com.easy.query.core.annotation.Table;
 import com.easy.query.core.annotation.EntityProxy;
 import lombok.experimental.FieldNameConstants;
+
+import java.util.List;
 
 /**
  * 权限表 实体类。
@@ -75,5 +78,8 @@ public class PermsEntity implements ProxyEntityAvailable<PermsEntity , PermsEnti
      */
     private Long deleted;
 
+    //不让eq查这个属性
+    @ColumnIgnore
+    private List<PermsEntity> children;
 
 }

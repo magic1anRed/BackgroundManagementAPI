@@ -14,6 +14,6 @@ public class PermsController {
     @Get
     @Mapping("/getPermsList")
     public R getPermsList(@Param("userId") Integer userId) {
-        return permsService.list(userId);
+        return permsService.treeList(userId);
     }
 }

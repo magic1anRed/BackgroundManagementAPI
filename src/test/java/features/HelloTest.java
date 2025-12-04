@@ -57,12 +57,15 @@ public class HelloTest extends HttpTester {
         String ip7 = "2606:4700:4700::1111";
 
         String region = ClientipUtil.parse(ip3);
-        System.out.println("region = " + region);*/
+        System.out.println("region = " + region);*//*
         String salts = MD5SaltsUtil.salts();
         String s = MD5SaltsUtil.md5("679523",salts);
-        System.out.println("password = " + s + " | salts = " + salts);
+        System.out.println("password = " + s + " | salts = " + salts);*/
 
 //        System.out.println("deptService.deptList() = " + userService.updateUserInfo(1,null,"老蒋",null));
+
+        System.out.println("permsService.treeList(1) = " + permsService.treeList(1));
+
 
 
     }
