@@ -1,14 +1,12 @@
 package cn.magic.backgroundmanagement.entity;
 
 import cn.magic.backgroundmanagement.entity.proxy.PermsEntityProxy;
-import com.easy.query.core.annotation.ColumnIgnore;
+import com.easy.query.core.annotation.*;
+import com.easy.query.core.basic.extension.logicdel.LogicDeleteStrategyEnum;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import com.easy.query.core.annotation.Column;
-import com.easy.query.core.annotation.Table;
-import com.easy.query.core.annotation.EntityProxy;
 import lombok.experimental.FieldNameConstants;
 
 import java.util.List;
@@ -76,6 +74,7 @@ public class PermsEntity implements ProxyEntityAvailable<PermsEntity , PermsEnti
     /**
      * 删除状态，0未删除
      */
+    @LogicDelete(strategy = LogicDeleteStrategyEnum.DELETE_LONG_TIMESTAMP)
     private Long deleted;
 
     //不让eq查这个属性

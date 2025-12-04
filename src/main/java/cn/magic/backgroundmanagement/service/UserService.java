@@ -7,14 +7,86 @@ import cn.magic.backgroundmanagement.utils.MD5SaltsUtil;
 import cn.magic.backgroundmanagement.utils.R;
 import com.easy.query.api.proxy.client.EasyEntityQuery;
 import com.easy.query.api.proxy.entity.update.ExpressionUpdatable;
+import com.easy.query.core.api.pagination.EasyPageResult;
 import com.easy.query.solon.annotation.Db;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Param;
 
 @Component
 public class UserService {
 
     @Db
     private EasyEntityQuery easyEntityQuery;
+
+    public R userList(Integer currentPage, Integer pageSize,
+                      String username, String realname, String remarks, Integer status) {
+        EasyPageResult<UsersEntity> pageResult = easyEntityQuery
+                .queryable(UsersEntity.class)
+                // 用户名，非空才查询
+                .where(username != null && !username.isEmpty(),
+                        u -> u.username().like(username))
+                // 真实姓名，非空才查询
+                .where(realname != null && !realname.isEmpty(),
+                        u -> u.realname().like(realname))
+                // 备注，非空才查询
+                .where(remarks != null && !remarks.isEmpty(),
+                        u -> u.remarks().like(remarks))
+                // 状态，非空才查询（0 也能查，因为 status=null 才表示不筛选）
+                .where(status != null,
+                        u -> u.status().eq(status))
+                .include(UsersEntityProxy::role)
+                .include(UsersEntityProxy::dept)
+                .toPageResult(currentPage, pageSize);
+        return R.ok("获取用户列表成功！", pageResult);
+    }
+
+    public R getUserById(Integer id) {
+        UsersEntity usersEntity = easyEntityQuery.queryable(UsersEntity.class)
+                .where(u -> u.id().eq(id))
+                .include(UsersEntityProxy::role)
+                .include(UsersEntityProxy::dept)
+                .firstNotNull();
+        return R.ok("获取用户信息成功！", usersEntity);
+    }
+
+    public R addUser(String username, String realname, String password, String remarks, Integer status,Integer roleId, Integer deptID) {
+        UsersEntity usersEntity = new UsersEntity();
+        usersEntity.setUsername(username);
+        usersEntity.setRealname(realname);
+        String salts = MD5SaltsUtil.salts();
+        usersEntity.setPassword(MD5SaltsUtil.md5(password, salts));
+        usersEntity.setSalts(salts);
+        usersEntity.setRemarks(remarks);
+        usersEntity.setStatus(status);
+        usersEntity.setRoleId(roleId);
+        usersEntity.setDeptId(deptID);
+        long rows = easyEntityQuery.insertable(usersEntity).executeRows();
+        return rows > 0 ? R.ok("添加用户成功！") : R.error("添加用户失败！");
+    }
+
+    public R updateUser(Integer id, String username, String realname, String password, String remarks, Integer status,Integer roleId, Integer deptID) {
+        UsersEntity usersEntity = new UsersEntity();
+        usersEntity.setId(id);
+        usersEntity.setUsername(username);
+        usersEntity.setRealname(realname);
+        usersEntity.setRemarks(remarks);
+        usersEntity.setStatus(status);
+        usersEntity.setRoleId(roleId);
+        usersEntity.setDeptId(deptID);
+        long rows = easyEntityQuery.updatable(usersEntity).executeRows();
+        return rows > 0 ? R.ok("更新用户成功！") : R.error("更新用户失败！");
+    }
+
+    public R deleteUser(Integer id) {
+        long rows = easyEntityQuery.deletable(UsersEntity.class)
+                .where(u -> u.id().eq(id))
+                .executeRows();
+        return rows > 0 ? R.ok("删除用户成功！") : R.error("删除用户失败！");
+    }
+
+
+
+
 
     public R updateUserInfo(Integer id, String username, String realname, String remarks) {
 

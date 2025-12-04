@@ -18,7 +18,6 @@ public class DeptService {
 
     public R deptList(Integer currentPage, Integer pageSize, String name){
         EasyPageResult<DeptEntity> pageResult = easyEntityQuery.queryable(DeptEntity.class)
-                .where(d -> d.deleted().eq(0))
                 .where(d -> d.name().like(name))
                 .toPageResult(currentPage, pageSize);
         return R.ok("获取部门列表成功！",pageResult);
@@ -30,9 +29,15 @@ public class DeptService {
                 .firstNotNull();
         return R.ok("获取部门成功！",deptEntity);
     }
+
+    public R getDeptName(){
+        List<DeptEntity> deptEntities = easyEntityQuery.queryable(DeptEntity.class)
+                .select(d ->d.FETCHER.id().name()).toList();
+        return R.ok("获取部门名称成功！",deptEntities);
+    }
+
     public R addDept(String name){
         DeptEntity deptEntity = new DeptEntity();
-        deptEntity.setDeleted(0);
         deptEntity.setId(null);
         deptEntity.setName(name);
         long l = easyEntityQuery.insertable(deptEntity).executeRows();
@@ -46,7 +51,6 @@ public class DeptService {
         DeptEntity deptEntity = new DeptEntity();
         deptEntity.setId(id);
         deptEntity.setName(name);
-        deptEntity.setDeleted(0);
         long l = easyEntityQuery.updatable(deptEntity).where(d -> d.id().eq(id)).executeRows();
         if (l == 0) {
             return R.error("更新部门失败！");
@@ -55,14 +59,9 @@ public class DeptService {
     }
 
     public R deleteDept(Integer id){
-        long l = easyEntityQuery.updatable(DeptEntity.class)
-                .setColumns(o -> {
-                    o.deleted().set(1);
-                })
-                .where(d -> d.id().eq(id)).executeRows();
-        if (l == 0) {
-            return R.error("删除部门失败！");
-        }
-        return R.ok("删除部门成功！");
+        long l = easyEntityQuery.deletable(DeptEntity.class)
+                .where(d -> d.id().eq(id))
+                .executeRows();
+        return l == 0 ? R.error("删除部门失败！") : R.ok("删除部门成功！");
     }
 }

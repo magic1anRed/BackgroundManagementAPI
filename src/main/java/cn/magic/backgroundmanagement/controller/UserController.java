@@ -15,6 +15,62 @@ public class UserController {
     @Inject
     private QiniuUtils qiniuUtils;
 
+    @Get
+    @Mapping("/userList")
+    public R userList(
+            Integer currentPage,
+            Integer pageSize,
+            String username,
+            String realname,
+            String remarks,
+            Integer status
+    ){
+        return userService.userList(currentPage, pageSize, username, realname, remarks, status);
+    }
+
+    @Get
+    @Mapping("/getUserById")
+    public R getUserById(@Param("id") Integer id){
+        return userService.getUserById(id);
+    }
+
+    @Post
+    @Mapping("/addUser")
+    public R addUser(
+            @Param("username") String username,
+            @Param("realname") String realname,
+            @Param("password") String password,
+            @Param("remarks") String remarks,
+            @Param("status") Integer status,
+            @Param("roleId") Integer roleId,
+            @Param("deptID") Integer deptID
+    ){
+        return userService.addUser(username, realname, password, remarks, status, roleId, deptID);
+    }
+
+    @Put
+    @Mapping("/updateUser")
+    public R updateUser(
+            @Param("id") Integer id,
+            @Param("username") String username,
+            @Param("realname") String realname,
+            @Param("password") String password,
+            @Param("remarks") String remarks,
+            @Param("status") Integer status,
+            @Param("roleId") Integer roleId,
+            @Param("deptID") Integer deptID
+    ){
+        return userService.updateUser(id, username, realname, password, remarks, status, roleId, deptID);
+    }
+
+    @Delete
+    @Mapping("/deleteUser")
+    public R deleteUser(@Param("id") Integer id){
+        return userService.deleteUser( id);
+    }
+
+
+
     @Put
     @Mapping("/updateUserInfo")
     public R updateUserInfo(

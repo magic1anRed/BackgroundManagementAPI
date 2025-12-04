@@ -1,6 +1,8 @@
 package cn.magic.backgroundmanagement.entity;
 
 import cn.magic.backgroundmanagement.entity.proxy.DeptEntityProxy;
+import com.easy.query.core.annotation.LogicDelete;
+import com.easy.query.core.basic.extension.logicdel.LogicDeleteStrategyEnum;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import lombok.Data;
@@ -39,7 +41,8 @@ public class DeptEntity implements ProxyEntityAvailable<DeptEntity , DeptEntityP
     /**
      * 删除状态，0未删除
      */
-    private Integer deleted;
+    @LogicDelete(strategy = LogicDeleteStrategyEnum.DELETE_LONG_TIMESTAMP)
+    private Long deleted;
 
 
 }

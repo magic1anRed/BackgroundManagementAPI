@@ -25,6 +25,12 @@ public class DeptController {
         return deptService.getDeptById(id);
     }
 
+    @Get
+    @Mapping("/getDeptName")
+    public R getDeptName() {
+        return deptService.getDeptName();
+    }
+
     @Post
     @Mapping("/addDept")
     public R addDept(@Param("name") String name) {
@@ -43,4 +49,6 @@ public class DeptController {
     public R deleteDept(@Param("id") Integer id) {
         return R.ok(deptService.deleteDept(id));
     }
+
+
 }
