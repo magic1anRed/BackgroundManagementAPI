@@ -1,22 +1,28 @@
 package cn.magic.backgroundmanagement.service;
 
+import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.magic.backgroundmanagement.entity.UsersEntity;
 import cn.magic.backgroundmanagement.entity.proxy.UsersEntityProxy;
 import cn.magic.backgroundmanagement.utils.MD5SaltsUtil;
+import cn.magic.backgroundmanagement.utils.QiniuUtils;
 import cn.magic.backgroundmanagement.utils.R;
 import com.easy.query.api.proxy.client.EasyEntityQuery;
 import com.easy.query.api.proxy.entity.update.ExpressionUpdatable;
 import com.easy.query.core.api.pagination.EasyPageResult;
 import com.easy.query.solon.annotation.Db;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Param;
+import org.noear.solon.core.handle.UploadedFile;
 
 @Component
 public class UserService {
 
     @Db
     private EasyEntityQuery easyEntityQuery;
+    @Inject
+    private QiniuUtils qiniuUtils;
 
     public R userList(Integer currentPage, Integer pageSize,
                       String username, String realname, String remarks, Integer status) {
@@ -107,9 +113,6 @@ public class UserService {
     }
 
 
-
-
-
     public R updateUserInfo(Integer id, String username, String realname, String remarks) {
 
         ExpressionUpdatable<UsersEntityProxy, UsersEntity> upd = easyEntityQuery.updatable(UsersEntity.class)
@@ -147,7 +150,18 @@ public class UserService {
                     .executeRows();
             return l > 0 ? R.ok("密码修改成功！") : R.error("密码修改失败！");
         }
+    }
 
-
+    public R uploadUserAvatar(Integer id,UploadedFile  file) {
+        String encodedKey = qiniuUtils.upload(file);
+        //存入数据库
+        long l = easyEntityQuery.updatable(UsersEntity.class)
+                .setColumns(u -> u.avatar().set(encodedKey))
+                .where(u -> u.id().eq(id)).executeRows();
+        SaSession session = StpUtil.getSession();
+        UsersEntity userInf = (UsersEntity) session.get("userInfo");
+        userInf.setAvatar(encodedKey);
+        session.set("userInfo", userInf).update();
+        return l > 0 ? R.ok("上传成功！", encodedKey) : R.error("上传失败！");
     }
 }

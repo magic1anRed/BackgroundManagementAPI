@@ -103,9 +103,8 @@ public class UserController {
 
     @Post
     @Mapping("/uploadAvatar")
-    public R uploadAvatar(UploadedFile file){
-        String url = qiniuUtils.upload(file);
-        return R.ok(url);
+    public R uploadAvatar(Integer id,UploadedFile file){
+        return userService.uploadUserAvatar(id,file);
     }
 
 }

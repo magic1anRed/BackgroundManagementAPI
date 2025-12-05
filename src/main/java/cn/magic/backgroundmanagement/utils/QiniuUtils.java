@@ -13,6 +13,8 @@ import com.qiniu.util.Auth;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException; // 导入必要的类
+import java.net.URLEncoder; // 导入必要的类
 
 @Component
 public class QiniuUtils {
@@ -55,7 +57,18 @@ public class QiniuUtils {
             Response response = uploadManager.put(bytes, key, uploadToken);
 
             if (response.isOK()) {
-                return domain + "/" + key;
+                // ****** 修复 URL 编码问题 ******
+                try {
+                    // 对 key 进行 URL 编码，以确保文件名中的特殊字符可以被正确解析。
+                    // URLEncoder 默认将空格编码为 '+'，但 URL 路径通常需要 %20，因此进行替换。
+                    String encodedKey = URLEncoder.encode(key, "UTF-8").replace("+", "%20");
+                    //将key存入数据库
+
+                    return domain + "/" + encodedKey;
+                } catch (UnsupportedEncodingException e) {
+                    throw new RuntimeException("URL 编码失败 (UTF-8 不支持?)", e);
+                }
+                // ******************************
             } else {
                 throw new RuntimeException("七牛上传失败：" + response.toString());
             }

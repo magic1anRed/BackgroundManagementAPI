@@ -77,6 +77,10 @@ public class UsersEntity implements ProxyEntityAvailable<UsersEntity , UsersEnti
     private Integer status;
 
     /**
+     * 用户头像
+     */
+    private String avatar;
+    /**
      * 删除状态，0未删除
      *
      * @LogicDelete：配置逻辑删除

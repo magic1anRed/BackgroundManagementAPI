@@ -64,9 +64,5 @@ public class HelloTest extends HttpTester {
 
 //        System.out.println("deptService.deptList() = " + userService.updateUserInfo(1,null,"老蒋",null));
 
-        System.out.println("permsService.treeList(1) = " + permsService.treeList(1));
-
-
-
     }
 }
