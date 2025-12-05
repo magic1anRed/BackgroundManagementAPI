@@ -71,10 +71,32 @@ public class UserService {
         usersEntity.setRealname(realname);
         usersEntity.setRemarks(remarks);
         usersEntity.setStatus(status);
-        usersEntity.setRoleId(roleId);
-        usersEntity.setDeptId(deptID);
-        long rows = easyEntityQuery.updatable(usersEntity).executeRows();
+        long rows;
+        if (password != null && !password.isEmpty()) {
+            String salts = MD5SaltsUtil.salts();
+            usersEntity.setPassword(MD5SaltsUtil.md5(password, salts));
+            usersEntity.setSalts(salts);
+            usersEntity.setRoleId(roleId);
+            usersEntity.setDeptId(deptID);
+            rows = easyEntityQuery.updatable(usersEntity)
+                    .executeRows();
+        }else {
+            usersEntity.setRoleId(roleId);
+            usersEntity.setDeptId(deptID);
+            rows = easyEntityQuery.updatable(usersEntity)
+                    .setIgnoreColumns(UsersEntityProxy::salts)
+                    .setIgnoreColumns(UsersEntityProxy::password)
+                    .executeRows();
+        }
         return rows > 0 ? R.ok("更新用户成功！") : R.error("更新用户失败！");
+    }
+
+    public R updateUserStatus(Integer id, Integer status) {
+        long rows = easyEntityQuery.updatable(UsersEntity.class)
+                .where(u -> u.id().eq(id))
+                .setColumns(u -> u.status().set(status))
+                .executeRows();
+        return rows > 0 ? R.ok("更新用户状态成功！") : R.error("更新用户状态失败！");
     }
 
     public R deleteUser(Integer id) {
@@ -125,5 +147,7 @@ public class UserService {
                     .executeRows();
             return l > 0 ? R.ok("密码修改成功！") : R.error("密码修改失败！");
         }
+
+
     }
 }

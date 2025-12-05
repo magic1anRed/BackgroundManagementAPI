@@ -124,6 +124,11 @@
             <version>7.15.0</version>
         </dependency>
 
+        <!-- jackson -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-serialization-jackson</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

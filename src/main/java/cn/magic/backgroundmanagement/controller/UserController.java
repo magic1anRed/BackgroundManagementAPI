@@ -51,16 +51,25 @@ public class UserController {
     @Put
     @Mapping("/updateUser")
     public R updateUser(
-            @Param("id") Integer id,
-            @Param("username") String username,
-            @Param("realname") String realname,
-            @Param("password") String password,
-            @Param("remarks") String remarks,
-            @Param("status") Integer status,
-            @Param("roleId") Integer roleId,
-            @Param("deptID") Integer deptID
+             Integer id,
+             String username,
+             String realname,
+             String password,
+             String remarks,
+             Integer status,
+             Integer roleId,
+             Integer deptID
     ){
         return userService.updateUser(id, username, realname, password, remarks, status, roleId, deptID);
+    }
+
+    @Put
+    @Mapping("/updateUserStatus")
+    public R updateUserStatus(
+            @Param("id") Integer id,
+            @Param("status") Integer status
+    ){
+        return userService.updateUserStatus(id,status);
     }
 
     @Delete

@@ -7,6 +7,7 @@ import com.easy.query.core.annotation.*;
 import com.easy.query.core.basic.extension.logicdel.LogicDeleteStrategyEnum;
 import com.easy.query.core.enums.RelationTypeEnum;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -51,13 +52,13 @@ public class UsersEntity implements ProxyEntityAvailable<UsersEntity , UsersEnti
     /**
      * 账户密码
      */
-    @ONodeAttr(ignore = true)
+    @JsonIgnore
     private String password;
 
     /**
      * 账户盐值
      */
-    @ONodeAttr(ignore = true)
+    @JsonIgnore
     private String salts;
 
     /**

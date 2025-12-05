@@ -1,6 +1,7 @@
 package cn.magic.backgroundmanagement.service;
 
 import cn.magic.backgroundmanagement.entity.RoleEntity;
+import cn.magic.backgroundmanagement.entity.UsersEntity;
 import cn.magic.backgroundmanagement.entity.proxy.RoleEntityProxy;
 import cn.magic.backgroundmanagement.utils.R;
 import com.easy.query.api.proxy.client.EasyEntityQuery;
@@ -59,10 +60,24 @@ public class RoleService {
     }
 
     public R deleteRole(Integer id){
-        long l = easyEntityQuery.deletable(RoleEntity.class)
-                .where(r -> r.id().eq(id))
-                .executeRows();
-        return l == 0 ? R.error("删除角色失败！") : R.ok("删除角色成功！");
+        // 1. 检查是否有用户绑定了该角色
+        long userCount = easyEntityQuery.queryable(UsersEntity.class)
+                // 假设 UserEntity 中有一个字段 'roleId' 关联了 Role 的 'id'
+                .where(u -> u.roleId().eq(id))
+                .count();
+
+        if (userCount > 0) {
+            // 如果有用户绑定，则返回错误信息
+            return R.error(500,"删除角色失败！存在 " + userCount + " 个用户绑定了该角色。");
+        }else {
+            // 2. 如果没有用户绑定，则执行删除操作
+            long deletedRows = easyEntityQuery.deletable(RoleEntity.class)
+                    .where(r -> r.id().eq(id))
+                    .executeRows();
+
+            // 3. 根据删除结果返回
+            return deletedRows == 0 ? R.error("删除角色失败！角色不存在或删除失败。") : R.ok("删除角色成功！");
+        }
     }
 
     public R getRoleName(){
