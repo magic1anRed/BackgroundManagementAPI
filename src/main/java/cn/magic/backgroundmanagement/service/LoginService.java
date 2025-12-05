@@ -58,8 +58,6 @@ public class LoginService {
             return R.error("保存登录日志失败！登陆失败！");
         }
         // ---- 生成saToken并保存到redis 返回给前端 ----
-        usersEntity.getDept();
-        usersEntity.getRole();
         StpUtil.login(usersEntity.getId());
         String token = StpUtil.getTokenValue();
         StpUtil.getSession().set("userInfo", usersEntity);
