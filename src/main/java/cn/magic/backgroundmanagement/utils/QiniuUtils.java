@@ -64,7 +64,7 @@ public class QiniuUtils {
                     String encodedKey = URLEncoder.encode(key, "UTF-8").replace("+", "%20");
                     //将key存入数据库
 
-                    return domain + "/" + encodedKey;
+                    return encodedKey;
                 } catch (UnsupportedEncodingException e) {
                     throw new RuntimeException("URL 编码失败 (UTF-8 不支持?)", e);
                 }

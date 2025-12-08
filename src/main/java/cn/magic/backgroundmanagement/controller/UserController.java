@@ -52,7 +52,6 @@ public class UserController {
     @Mapping("/updateUser")
     public R updateUser(
              Integer id,
-             String username,
              String realname,
              String password,
              String remarks,
@@ -60,7 +59,7 @@ public class UserController {
              Integer roleId,
              Integer deptID
     ){
-        return userService.updateUser(id, username, realname, password, remarks, status, roleId, deptID);
+        return userService.updateUser(id, realname, password, remarks, status, roleId, deptID);
     }
 
     @Put

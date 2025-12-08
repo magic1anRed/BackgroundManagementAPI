@@ -24,6 +24,7 @@ easy-query:
   db1: # 必须和 solon.dataSources.db1! 名称一致
     database: mysql  # 数据库方言（mysql、postgresql、sqlserver等）
     print-sql: true  # 打印SQL日志
+    update-strategy: only_not_null_columns # 更新策略，只更新NOT NULL的字段
 
 redis:
   rd1: # 数据源-ds1

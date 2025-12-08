@@ -2,6 +2,7 @@ package cn.magic.backgroundmanagement.service;
 
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.magic.backgroundmanagement.entity.UsersEntity;
 import cn.magic.backgroundmanagement.entity.proxy.UsersEntityProxy;
 import cn.magic.backgroundmanagement.utils.MD5SaltsUtil;
@@ -70,31 +71,31 @@ public class UserService {
         return rows > 0 ? R.ok("添加用户成功！") : R.error("添加用户失败！");
     }
 
-    public R updateUser(Integer id, String username, String realname, String password, String remarks, Integer status,Integer roleId, Integer deptID) {
+    public R updateUser(Integer id, String realname, String password, String remarks, Integer status,Integer roleId, Integer deptID) {
+        // 禁止修改当前登录的用户
+        if (StpUtil.getLoginIdAsInt() == id) {
+            return R.error("不能修改当前登录用户");
+        }
         UsersEntity usersEntity = new UsersEntity();
         usersEntity.setId(id);
-        usersEntity.setUsername(username);
+        usersEntity.setDeptId(deptID);
+        usersEntity.setRoleId(roleId);
         usersEntity.setRealname(realname);
         usersEntity.setRemarks(remarks);
         usersEntity.setStatus(status);
-        long rows;
-        if (password != null && !password.isEmpty()) {
+        // 如果传递了密码，则重新生成盐值并加密
+        if (StrUtil.isNotBlank(password)) {
             String salts = MD5SaltsUtil.salts();
-            usersEntity.setPassword(MD5SaltsUtil.md5(password, salts));
+            String md5Password = MD5SaltsUtil.md5(password, salts);
+            usersEntity.setPassword(md5Password);
             usersEntity.setSalts(salts);
-            usersEntity.setRoleId(roleId);
-            usersEntity.setDeptId(deptID);
-            rows = easyEntityQuery.updatable(usersEntity)
-                    .executeRows();
-        }else {
-            usersEntity.setRoleId(roleId);
-            usersEntity.setDeptId(deptID);
-            rows = easyEntityQuery.updatable(usersEntity)
-                    .setIgnoreColumns(UsersEntityProxy::salts)
-                    .setIgnoreColumns(UsersEntityProxy::password)
-                    .executeRows();
+
+            // 密码修改后，将该用户踢下线
+            StpUtil.kickout(id);
         }
-        return rows > 0 ? R.ok("更新用户成功！") : R.error("更新用户失败！");
+        // 修改用户数据
+        easyEntityQuery.updatable(usersEntity).executeRows();
+        return R.ok("修改成功", null);
     }
 
     public R updateUserStatus(Integer id, Integer status) {
@@ -106,6 +107,10 @@ public class UserService {
     }
 
     public R deleteUser(Integer id) {
+        //判断删除用户是否是当前登录用户
+        if (StpUtil.getLoginIdAsInt() == id) {
+            return R.error(500,"不能删除当前登录用户！");
+        }
         long rows = easyEntityQuery.deletable(UsersEntity.class)
                 .where(u -> u.id().eq(id))
                 .executeRows();

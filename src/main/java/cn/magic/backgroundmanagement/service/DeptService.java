@@ -1,6 +1,7 @@
 package cn.magic.backgroundmanagement.service;
 
 import cn.magic.backgroundmanagement.entity.DeptEntity;
+import cn.magic.backgroundmanagement.entity.UsersEntity;
 import cn.magic.backgroundmanagement.entity.proxy.DeptEntityProxy;
 import cn.magic.backgroundmanagement.utils.R;
 import com.easy.query.api.proxy.client.EasyEntityQuery;
@@ -59,9 +60,19 @@ public class DeptService {
     }
 
     public R deleteDept(Integer id){
-        long l = easyEntityQuery.deletable(DeptEntity.class)
-                .where(d -> d.id().eq(id))
-                .executeRows();
-        return l == 0 ? R.error("删除部门失败！") : R.ok("删除部门成功！");
+        // 1. 检查是否有用户绑在了该部门
+        long userCount = easyEntityQuery.queryable(UsersEntity.class)
+                .where(u -> u.deptId().eq(id))
+                .count();
+        if (userCount > 0) {
+            return R.error(500,"删除部门失败！存在 " + userCount + " 个用户绑在了该部门。");
+        }else {
+            // 2. 如果没有用户绑在了该部门，则执行删除操作
+            long l = easyEntityQuery.deletable(DeptEntity.class)
+                    .where(d -> d.id().eq(id))
+                    .executeRows();
+            return l == 0 ? R.error("删除部门失败！") : R.ok("删除部门成功！");
+        }
+
     }
 }

@@ -81,4 +81,5 @@ public class PermsEntity implements ProxyEntityAvailable<PermsEntity , PermsEnti
     @ColumnIgnore
     private List<PermsEntity> children;
 
+    private String icon;
 }
