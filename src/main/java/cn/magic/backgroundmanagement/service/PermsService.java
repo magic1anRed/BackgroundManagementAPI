@@ -31,7 +31,9 @@ public class PermsService {
         if (status != null && status != 0){
             queryable.where(p -> p.status().eq(status));
         }
-        List<PermsEntity> list = queryable.toList();
+        List<PermsEntity> list = queryable
+                .orderBy(p -> p.sortId().asc())
+                .toList();
         return R.ok("获取菜单成功", list);
     }
 
@@ -63,6 +65,27 @@ public class PermsService {
         return R.ok("获取菜单成功", tree);
     }
 
+    public R update(PermsEntity permsEntity){
+        long l = easyEntityQuery.updatable(permsEntity).where(p -> p.id().eq(permsEntity.getId())).executeRows();
+        return l == 0 ? R.error("更新菜单失败！") : R.ok("更新菜单成功！");
+    }
+
+    public R add(PermsEntity permsEntity){
+        long l = easyEntityQuery.insertable(permsEntity).executeRows();
+        return l == 0 ? R.error("添加菜单失败！") : R.ok("添加菜单成功！");
+    }
+
+    public R delete(Integer id){
+        long l = easyEntityQuery.deletable(PermsEntity.class).where(p -> p.id().eq(id)).executeRows();
+        return l == 0 ? R.error("删除菜单失败！") : R.ok("删除菜单成功！");
+    }
+
+    public R getPerms() {
+        List<PermsEntity> list = easyEntityQuery.queryable(PermsEntity.class)
+                .where(p -> p.status().eq(1))
+                .toList();
+        return R.ok("获取菜单成功", list);
+    }
 
     /**
      * 构建树形菜单

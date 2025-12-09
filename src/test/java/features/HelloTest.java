@@ -4,15 +4,13 @@ import cn.dev33.satoken.dao.SaTokenDao;
 import cn.magic.backgroundmanagement.App;
 
 import cn.magic.backgroundmanagement.entity.DeptEntity;
+import cn.magic.backgroundmanagement.entity.PermsEntity;
 import cn.magic.backgroundmanagement.entity.UsersEntity;
 import cn.magic.backgroundmanagement.service.DeptService;
 import cn.magic.backgroundmanagement.service.LoginService;
 import cn.magic.backgroundmanagement.service.PermsService;
 import cn.magic.backgroundmanagement.service.UserService;
-import cn.magic.backgroundmanagement.utils.ClientipUtil;
-import cn.magic.backgroundmanagement.utils.Ip2RegionUtil;
-import cn.magic.backgroundmanagement.utils.MD5SaltsUtil;
-import cn.magic.backgroundmanagement.utils.SaTokenConfig;
+import cn.magic.backgroundmanagement.utils.*;
 import com.easy.query.core.api.client.EasyQueryClient;
 import com.easy.query.solon.annotation.Db;
 import com.sun.org.slf4j.internal.Logger;
@@ -63,6 +61,12 @@ public class HelloTest extends HttpTester {
         System.out.println("password = " + s + " | salts = " + salts);*/
 
 //        System.out.println("deptService.deptList() = " + userService.updateUserInfo(1,null,"老蒋",null));
+
+        PermsEntity perms = new PermsEntity();
+        perms.setId(1);
+        perms.setName("首页11");
+        R update = permsService.update(perms);
+        System.out.println("update = " + update);
 
     }
 }
